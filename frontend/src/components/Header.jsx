@@ -52,6 +52,7 @@ const Header = () => {
                 <button className="login-btn" onClick={handleLoginClick}>Login</button>
               )}
             </li>
+            <li><button className="login-btn">Cart</button></li>
           </ul>
         </nav>
       </header>
