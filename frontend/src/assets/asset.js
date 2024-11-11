@@ -75,292 +75,354 @@ import  insta from './insta.png';
 import facebook from './facebook.png';
 import youtube from './youtube.png';
 import tick from './tick.jpg';
+
+
+
+
 export const product_list = [
   {
     product_name: "Gentle Skin Cleanser",
-    product_image: cleanser1
+    product_image: cleanser1,
+    product_price: 499 // Price in INR
   },
   {
     product_name: "Deep Cleansing Oil Cleanser",
-    product_image: cleanser2
+    product_image: cleanser2,
+    product_price: 699
   },
   {
     product_name: "Micellar Water Cleanser",
-    product_image: cleanser3
+    product_image: cleanser3,
+    product_price: 599
   },
   {
     product_name: "Foaming Cleanser",
-    product_image: cleanser4
+    product_image: cleanser4,
+    product_price: 549
   },
   {
     product_name: "Exfoliating Cleanser",
-    product_image: cleanser5
+    product_image: cleanser5,
+    product_price: 799
   },
   {
     product_name: "Daily Moisturizing Lotion",
-    product_image: moisturizer1
+    product_image: moisturizer1,
+    product_price: 899
   },
   {
     product_name: "Oil-Free Moisturizer",
-    product_image: moisturizer2
+    product_image: moisturizer2,
+    product_price: 799
   },
   {
     product_name: "Hydrating Gel Moisturizer",
-    product_image: moisturizer3
+    product_image: moisturizer3,
+    product_price: 999
   },
   {
     product_name: "Anti-Aging Night Cream",
-    product_image: moisturizer4
+    product_image: moisturizer4,
+    product_price: 1099
   },
   {
     product_name: "Brightening Moisturizer",
-    product_image: moisturizer5
+    product_image: moisturizer5,
+    product_price: 899
   },
   {
     product_name: "Vitamin C Serum",
-    product_image: serum1
+    product_image: serum1,
+    product_price: 1499
   },
   {
     product_name: "Hyaluronic Acid Serum",
-    product_image: serum2
+    product_image: serum2,
+    product_price: 1299
   },
   {
     product_name: "Retinol Serum",
-    product_image: serum3
+    product_image: serum3,
+    product_price: 1399
   },
   {
     product_name: "Niacinamide Serum",
-    product_image: serum4
+    product_image: serum4,
+    product_price: 1199
   },
   {
     product_name: "Collagen Boosting Serum",
-    product_image: serum5
+    product_image: serum5,
+    product_price: 1599
   },
   {
     product_name: "Anti-Wrinkle Eye Cream",
-    product_image: eyecream1
+    product_image: eyecream1,
+    product_price: 899
   },
   {
     product_name: "Dark Circle Eye Cream",
-    product_image: eyecream2
+    product_image: eyecream2,
+    product_price: 799
   },
   {
     product_name: "Puffy Eye Cream",
-    product_image: eyecream3
+    product_image: eyecream3,
+    product_price: 899
   },
   {
     product_name: "Hydrating Eye Cream",
-    product_image: eyecream4
+    product_image: eyecream4,
+    product_price: 999
   },
   {
     product_name: "Brightening Eye Cream",
-    product_image: eyecream5
+    product_image: eyecream5,
+    product_price: 999
   },
   {
     product_name: "SPF 30 Sunscreen",
-    product_image: sunscreen1
+    product_image: sunscreen1,
+    product_price: 699
   },
   {
     product_name: "SPF 50 Sunscreen",
-    product_image: sunscreen2
+    product_image: sunscreen2,
+    product_price: 799
   },
   {
     product_name: "Waterproof Sunscreen",
-    product_image: sunscreen3
+    product_image: sunscreen3,
+    product_price: 899
   },
   {
     product_name: "Tinted Sunscreen",
-    product_image: sunscreen4
+    product_image: sunscreen4,
+    product_price: 799
   },
   {
     product_name: "Mineral Sunscreen",
-    product_image: sunscreen5
+    product_image: sunscreen5,
+    product_price: 799
   },
   {
     product_name: "Refreshing Body Wash",
-    product_image: bodywash1
+    product_image: bodywash1,
+    product_price: 499
   },
   {
     product_name: "Exfoliating Body Wash",
-    product_image: bodywash2
+    product_image: bodywash2,
+    product_price: 599
   },
   {
     product_name: "Hydrating Body Wash",
-    product_image: bodywash3
+    product_image: bodywash3,
+    product_price: 599
   },
   {
     product_name: "Nourishing Body Wash",
-    product_image: bodywash4
+    product_image: bodywash4,
+    product_price: 649
   },
   {
     product_name: "Soothing Body Wash",
-    product_image: bodywash5
+    product_image: bodywash5,
+    product_price: 599
   },
   {
     product_name: "Volumizing Shampoo",
-    product_image: shampoo1
+    product_image: shampoo1,
+    product_price: 699
   },
   {
     product_name: "Anti-Dandruff Shampoo",
-    product_image: shampoo2
+    product_image: shampoo2,
+    product_price: 649
   },
   {
     product_name: "Moisturizing Shampoo",
-    product_image: shampoo3
+    product_image: shampoo3,
+    product_price: 799
   },
   {
     product_name: "Color Protect Shampoo",
-    product_image: shampoo4
+    product_image: shampoo4,
+    product_price: 799
   },
   {
     product_name: "Clarifying Shampoo",
-    product_image: shampoo5
+    product_image: shampoo5,
+    product_price: 749
   },
   {
     product_name: "Brightening Face Mask",
-    product_image: facemask1
+    product_image: facemask1,
+    product_price: 499
   },
   {
     product_name: "Hydrating Face Mask",
-    product_image: facemask2
+    product_image: facemask2,
+    product_price: 599
   },
   {
     product_name: "Detoxifying Face Mask",
-    product_image: facemask3
+    product_image: facemask3,
+    product_price: 649
   },
   {
     product_name: "Anti-Aging Face Mask",
-    product_image: facemask4
+    product_image: facemask4,
+    product_price: 699
   },
   {
     product_name: "Soothing Face Mask",
-    product_image: facemask5
+    product_image: facemask5,
+    product_price: 599
   },
   {
     product_name: "Citrus Fragrance",
-    product_image: fragrance1
+    product_image: fragrance1,
+    product_price: 499
   },
   {
     product_name: "Floral Fragrance",
-    product_image: fragrance2
+    product_image: fragrance2,
+    product_price: 599
   },
   {
     product_name: "Woody Fragrance",
-    product_image: fragrance3
+    product_image: fragrance3,
+    product_price: 649
   },
   {
     product_name: "Fresh Fragrance",
-    product_image: fragrance4
+    product_image: fragrance4,
+    product_price: 699
   },
   {
     product_name: "Oriental Fragrance",
-    product_image: fragrance5
+    product_image: fragrance5,
+    product_price: 799
   },
   {
     product_name: "Exfoliating Scrub",
-    product_image: scrub1
+    product_image: scrub1,
+    product_price: 499
   },
   {
     product_name: "Brightening Scrub",
-    product_image: scrub2
+    product_image: scrub2,
+    product_price: 599
   },
   {
     product_name: "Deep Cleansing Scrub",
-    product_image: scrub3
+    product_image: scrub3,
+    product_price: 649
   },
   {
     product_name: "Moisturizing Scrub",
-    product_image: scrub4
+    product_image: scrub4,
+    product_price: 699
   },
   {
     product_name: "Soothing Scrub",
-    product_image: scrub5
+    product_image: scrub5,
+    product_price: 599
   },
   {
     product_name: "Hair Repair Serum",
-    product_image: hairserum1
+    product_image: hairserum1,
+    product_price: 999
   },
   {
     product_name: "Anti-Frizz Hair Serum",
-    product_image: hairserum2
+    product_image: hairserum2,
+    product_price: 1099
   },
   {
     product_name: "Hair Growth Serum",
-    product_image: hairserum3
+    product_image: hairserum3,
+    product_price: 1299
   },
   {
     product_name: "Volumizing Hair Serum",
-    product_image: hairserum4
+    product_image: hairserum4,
+    product_price: 1199
   },
   {
     product_name: "Color Protect Hair Serum",
-    product_image: hairserum5
+    product_image: hairserum5,
+    product_price: 1399
   },
   {
     product_name: "Refreshing Toner",
-    product_image: toner1
+    product_image: toner1,
+    product_price: 499
   },
   {
     product_name: "Hydrating Toner",
-    product_image: toner2
+    product_image: toner2,
+    product_price: 599
   },
   {
     product_name: "Brightening Toner",
-    product_image: toner3
+    product_image: toner3,
+    product_price: 649
   },
   {
     product_name: "Pore Minimizing Toner",
-    product_image: toner4
+    product_image: toner4,
+    product_price: 699
   },
   {
     product_name: "Anti-Aging Toner",
-    product_image: toner5
+    product_image: toner5,
+    product_price: 799
   },
   {
     product_name: "Ultimate Skincare Combo Kit",
-    product_image: combokit1
+    product_image: combokit1,
+    product_price: 2999
   },
   {
     product_name: "Daily Essentials Combo Kit",
-    product_image: combokit2
+    product_image: combokit2,
+    product_price: 2499
   },
   {
     product_name: "Anti-Aging Combo Kit",
-    product_image: combokit3
+    product_image: combokit3,
+    product_price: 3299
   },
   {
     product_name: "Brightening Combo Kit",
-    product_image: combokit4
+    product_image: combokit4,
+    product_price: 2799
   },
   {
     product_name: "Hydration Combo Kit",
-    product_image: combokit5
+    product_image: combokit5,
+    product_price: 2599
   },
   {
     product_name: "Oil Control Combo Kit",
-    product_image: combokit6
+    product_image: combokit6,
+    product_price: 2499
   },
   {
     product_name: "Sensitive Skin Combo Kit",
-    product_image: combokit7
+    product_image: combokit7,
+    product_price: 2699
   },
   {
     product_name: "Travel Size Combo Kit",
-    product_image: combokit8
+    product_image: combokit8,
+    product_price: 1999
   },
   {
-    product_name: "All-in-One Combo Kit",
-    product_image: combokit9
-  },
-  {
-    product_name: "Luxury Skincare Combo Kit",
-    product_image: combokit10
-  },
-
+    product_name: "All-in-One Skincare Kit",
+    product_image: combokit9,
+    product_price: 3599
+  }
 ];
-// import { assets } from '../../assets/assets';
-// export const assets = {
-//   logo,
-//   cross
-//   // Export other assets here
-// };

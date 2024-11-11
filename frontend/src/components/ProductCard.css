@@ -1,19 +1,66 @@
-/* src/components/ProductCard.css */
+/* Add to cart button styling */
 .add-to-cart-btn {
-    background-color: #4CAF50; /* Green */
+    background-color: #27ae60;
     color: white;
     border: none;
     padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
-    border-radius: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
   }
   
   .add-to-cart-btn:hover {
-    background-color: #45a049;
+    background-color: #2ecc71;
+  }
+  
+  .add-to-cart-btn:active {
+    background-color: #2ecc71;
+    transform: scale(0.98); /* Slight scale effect when button is clicked */
+  }
+  
+  /* Styling for the button when product is added to cart */
+  /* .add-to-cart-btn.added {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    color: #bdc3c7;
+  } */
+  
+  .add-to-cart-btn.added:hover {
+    background-color: #95a5a6;
+  }
+  
+  .add-to-cart-btn.added:active {
+    /* transform: none; No scaling effect when the button is in 'added' state */
+  }
+  
+  /* Quantity container styling */
+  .quantity-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .quantity-btn {
+    background-color: #ddd;
+    color: #333;
+    font-size: 18px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    user-select: none;
+  }
+  
+  .quantity-btn:hover {
+    background-color: #ccc;
+  }
+  
+  .quantity-input {
+    width: 40px;
+    text-align: center;
+    margin: 0 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    font-size: 16px;
   }
   

@@ -1,6 +1,4 @@
-// src/pages/Home.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
 import { product_list } from '../assets/asset.js';
 import homeimage from '../assets/homeimage.png';
 import './Home.css';
@@ -8,12 +6,15 @@ import Footer from '../components/Footer.jsx';
 import Header from '../components/Header.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 
-const Home = () => {
-  const [cart, setCart] = useState([]); // Cart state to hold added products
+const Home = ({ cart, onAddToCart }) => {
+  const [quantities, setQuantities] = useState({}); // Track quantities of products
 
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]); // Add product to cart
-    alert(`${product.product_name} added to cart`); // Optional: alert user that the product was added
+  // Function to handle quantity change for each product
+  const handleQuantityChange = (productId, quantity) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [productId]: quantity,
+    }));
   };
 
   const bestsellers = product_list.slice(0, 5);
@@ -30,46 +31,126 @@ const Home = () => {
   const combokit = product_list.slice(60, 65);
   const combokits = product_list.slice(65, 70);
 
+  const handleAddToCart = (product) => {
+    const quantity = quantities[product.product_id] || 1; // Default quantity is 1 if no input
+    onAddToCart({ ...product, quantity }); // Pass the product with quantity to onAddToCart
+  };
+
   return (
     <div className="home">
       <Header />
       <h1 className="main-heading">Welcome to Our Store - Clesa</h1>
       <img src={homeimage} className="homeimage" alt="Home" />
-
       <div className="container">
-        {/* Product Categories */}
-        <CategorySection title="Bestsellers" products={bestsellers} onAddToCart={handleAddToCart} />
-        <CategorySection title="Cleansers" products={cleanser} onAddToCart={handleAddToCart} />
-        <CategorySection title="Moisturizer" products={moisturizer} onAddToCart={handleAddToCart} />
-        <CategorySection title="Serums" products={serums} onAddToCart={handleAddToCart} />
-        <CategorySection title="Eyecream" products={eyecream} onAddToCart={handleAddToCart} />
-        <CategorySection title="Sunscreen" products={sunscreen} onAddToCart={handleAddToCart} />
-        <CategorySection title="Bodywash" products={bodywash} onAddToCart={handleAddToCart} />
-        <CategorySection title="Shampoo" products={shampoo} onAddToCart={handleAddToCart} />
-        <CategorySection title="Facemask" products={facemask} onAddToCart={handleAddToCart} />
-        <CategorySection title="Scrub" products={scrub} onAddToCart={handleAddToCart} />
-        <CategorySection title="Toner" products={toner} onAddToCart={handleAddToCart} />
-        <CategorySection title="Combo Kit" products={combokit} onAddToCart={handleAddToCart} />
-        <CategorySection title="Combo Kits" products={combokits} onAddToCart={handleAddToCart} />
+        <CategorySection
+          title="Bestsellers"
+          products={bestsellers}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Cleansers"
+          products={cleanser}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Moisturizer"
+          products={moisturizer}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Serums"
+          products={serums}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Eyecream"
+          products={eyecream}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Sunscreen"
+          products={sunscreen}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Bodywash"
+          products={bodywash}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Shampoo"
+          products={shampoo}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Facemask"
+          products={facemask}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Scrub"
+          products={scrub}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Toner"
+          products={toner}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Combo Kit"
+          products={combokit}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
+        <CategorySection
+          title="Combo Kits"
+          products={combokits}
+          quantities={quantities}
+          onAddToCart={handleAddToCart}
+          onQuantityChange={handleQuantityChange}
+        />
       </div>
-
-      {/* Link to the Cart page */}
-      <Link to="/cart">
-        <button className="view-cart-btn">Go to Cart</button>
-      </Link>
-
       <Footer />
     </div>
   );
 };
 
-// Category Section Component
-const CategorySection = ({ title, products, onAddToCart }) => (
+const CategorySection = ({ title, products, quantities, onAddToCart, onQuantityChange }) => (
   <>
     <h4 className="main-heading">{title}</h4>
     <div className="image-gallery row">
       {products.map((product, index) => (
-        <ProductCard key={index} product={product} onAddToCart={onAddToCart} />
+        <ProductCard
+          key={index}
+          product={product}
+          quantity={quantities[product.product_id] || 1}
+          onAddToCart={onAddToCart}
+          onQuantityChange={onQuantityChange}
+        />
       ))}
     </div>
   </>
