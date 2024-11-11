@@ -11,6 +11,7 @@ import Bodycare from './pages/Bodycare';
 import Fragrance from './pages/Fragrance'
 import Footer from './components/Footer';
 import Login from './components/Login';
+import Cart from './pages/Cart';
 import './App.css'; 
 
 
@@ -42,6 +43,8 @@ function App() {
             <Route path="/haircare" element={<Haircare />} />
             <Route path="/bodycare" element={<Bodycare />} />
             <Route path="/fragrance" element={<Fragrance />}/>
+            <Route path="/" element={<Home cart={cart} setCart={setCart} />} />
+            <Route path="/cart" element={<Cart cart={cart} />} />
           </Routes>
         </main>
         {showLogin && <Login onClose={handleCloseLogin} />}

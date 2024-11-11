@@ -5,7 +5,7 @@ import logo from '../assets/logo.png';
 import Login from './Login';
 
 const Header = () => {
-  //current state and setter function
+  // current state and setter function
   const [showLogin, setShowLogin] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -21,7 +21,6 @@ const Header = () => {
     setShowLogin(false);
   };
   
-
   return (
     <>
       <header>
@@ -52,7 +51,10 @@ const Header = () => {
                 <button className="login-btn" onClick={handleLoginClick}>Login</button>
               )}
             </li>
-            <li><button className="login-btn">Cart</button></li>
+            {/* Cart link added here */}
+            <li>
+              <Link to="/cart">Cart</Link>
+            </li>
           </ul>
         </nav>
       </header>
