@@ -5,6 +5,8 @@ import './Home.css';
 import Footer from '../components/Footer.jsx';
 import Header from '../components/Header.jsx';
 import ProductCard from '../components/ProductCard.jsx';
+import { Link } from 'react-router-dom';
+
 
 const Home = ({ cart, onAddToCart }) => {
   const [quantities, setQuantities] = useState({}); // Track quantities of products
@@ -41,6 +43,19 @@ const Home = ({ cart, onAddToCart }) => {
       <Header />
       <h1 className="main-heading">Welcome to Our Store - Clesa</h1>
       <img src={homeimage} className="homeimage" alt="Home" />
+      <div className="assessment-container">
+        <p className="assessment-text">
+          Want to know your skin better? Take the Assessment test now!
+        </p>
+        <div className="assessment-link-container">
+          <a href="/assessment-form" className="assessment-link">
+            <button className="assessment-btn">
+              Take the Assessment
+            </button>
+          </a>
+        </div>
+      </div>
+      <hr></hr>
       <div className="container">
         <CategorySection
           title="Bestsellers"

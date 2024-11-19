@@ -10,23 +10,28 @@ const Cart = ({ cart, onRemoveFromCart, onUpdateQuantity }) => {
   const totalPriceInINR = calculateTotal();
 
   const handleQuantityChange = (index, newQuantity) => {
-    // Update the quantity in the cart
-    onUpdateQuantity(index, newQuantity);
+    onUpdateQuantity(index, newQuantity); // Call the parent function
+  };
+
+  // Handle Checkout button click
+  const handleCheckout = () => {
+    alert('Proceeding to checkout...');
+    // You can add your checkout logic here
   };
 
   return (
     <div className="cart-page">
-      <h3>Your Cart</h3>
+      <h3>Your Shopping Cart</h3>
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <div className="cart-items">
           {cart.map((product, index) => (
             <div key={index} className="cart-item">
-              <img 
-                src={product.product_image} 
-                alt={product.product_name} 
-                className="cart-item-img" 
+              <img
+                src={product.product_image}
+                alt={product.product_name}
+                className="cart-item-img"
               />
               <div className="product-info">
                 <span className="product-name">{product.product_name}</span>
@@ -37,9 +42,9 @@ const Cart = ({ cart, onRemoveFromCart, onUpdateQuantity }) => {
 
               {/* Quantity Selector */}
               <div className="quantity-container">
-                <button 
-                  className="quantity-btn" 
-                  onClick={() => handleQuantityChange(index, product.quantity - 1)} 
+                <button
+                  className="quantity-btn"
+                  onClick={() => handleQuantityChange(index, product.quantity - 1)}
                   disabled={product.quantity <= 1}
                 >
                   -
@@ -50,8 +55,8 @@ const Cart = ({ cart, onRemoveFromCart, onUpdateQuantity }) => {
                   className="quantity-input"
                   onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
                 />
-                <button 
-                  className="quantity-btn" 
+                <button
+                  className="quantity-btn"
                   onClick={() => handleQuantityChange(index, product.quantity + 1)}
                 >
                   +
@@ -69,6 +74,16 @@ const Cart = ({ cart, onRemoveFromCart, onUpdateQuantity }) => {
           <h4>Total: ₹{new Intl.NumberFormat().format(totalPriceInINR)}</h4>
         </div>
       )}
+
+      {/* Checkout Button */}
+      {cart.length > 0 && (
+  <div className="checkout-btn-container">
+    <button className="checkout-btn" onClick={handleCheckout}>
+      Proceed to Checkout
+    </button>
+  </div>
+)}
+
     </div>
   );
 };
