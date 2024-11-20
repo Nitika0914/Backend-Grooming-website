@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Cart.css';
 
 const Cart = ({ cart, onRemoveFromCart, onUpdateQuantity }) => {
+  const [discount, setDiscount] = useState(0);
+  const [shippingCharges, setShippingCharges] = useState(0);
+
   // Calculate total in INR with quantity considered
   const calculateTotal = () => {
     return cart.reduce((total, product) => total + product.product_price * product.quantity, 0);
@@ -9,19 +12,34 @@ const Cart = ({ cart, onRemoveFromCart, onUpdateQuantity }) => {
 
   const totalPriceInINR = calculateTotal();
 
+  // Calculate and set discount and shipping charges based on cart value
+  useEffect(() => {
+    // Apply 5% discount
+    setDiscount((totalPriceInINR * 10) / 100);
+
+    // Apply ₹99 shipping if cart value is less than ₹999
+    setShippingCharges(totalPriceInINR < 999 ? 99 : 0);
+  }, [totalPriceInINR]);
+
+  // Calculate final total after applying discount and adding shipping charges
+  const finalTotal = Math.max(
+    0,
+    totalPriceInINR - discount + shippingCharges
+  );
+
   const handleQuantityChange = (index, newQuantity) => {
     onUpdateQuantity(index, newQuantity); // Call the parent function
   };
 
-  // Handle Checkout button click
   const handleCheckout = () => {
     alert('Proceeding to checkout...');
-    // You can add your checkout logic here
+    // Add your checkout logic here
   };
 
   return (
-    <div className="cart-page">
+    <>
       <h3>Your Shopping Cart</h3>
+    <div className="cart-page">
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
@@ -63,28 +81,35 @@ const Cart = ({ cart, onRemoveFromCart, onUpdateQuantity }) => {
                 </button>
               </div>
 
-              <button onClick={() => onRemoveFromCart(index)} className="remove-btn">Remove</button>
+              <button onClick={() => onRemoveFromCart(index)} className="remove-btn">
+                Remove
+              </button>
             </div>
           ))}
         </div>
       )}
 
-      {cart.length > 0 && (
-        <div className="total-price">
-          <h4>Total: ₹{new Intl.NumberFormat().format(totalPriceInINR)}</h4>
-        </div>
-      )}
 
       {/* Checkout Button */}
       {cart.length > 0 && (
-  <div className="checkout-btn-container">
-    <button className="checkout-btn" onClick={handleCheckout}>
-      Proceed to Checkout
-    </button>
-  </div>
-)}
+        <div className="checkout-section">
+          <div className="price-summary">
+          <h4>Subtotal: ₹{new Intl.NumberFormat().format(totalPriceInINR)}</h4>
+          <h4>Discount (10%): -₹{new Intl.NumberFormat().format(discount)}</h4>
+          <h4>Shipping Charges: ₹{new Intl.NumberFormat().format(shippingCharges)}</h4>
+          <h4>Final Total: ₹{new Intl.NumberFormat().format(finalTotal)}</h4>
+        </div>
+          <div className="checkout-btn-container">
+            <button className="checkout-btn" onClick={handleCheckout}>
+              Proceed to Checkout
+            </button>
+          </div>
+        </div>
+      )}
+
 
     </div>
+    </>
   );
 };
 

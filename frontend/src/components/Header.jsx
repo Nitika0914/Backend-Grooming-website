@@ -6,26 +6,71 @@ import Login from './Login';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FaShoppingCart } from 'react-icons/fa';
+import { product_list } from '../assets/asset';
+
 const Header = () => {
-  // current state and setter function
-  const [showMenu, setShowMenu] = useState(false); 
+  const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [user, setUser] = useState(null);
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
-  const handleLoginClick = () => {
-    setShowLogin(true);
+  const handleLoginClick = () => setShowLogin(true);
+
+  const handleSearch = (query) => {
+    const lowerCaseQuery = query.toLowerCase().trim();
+    if (lowerCaseQuery) {
+      const filteredProducts = product_list.filter(product =>
+        product.product_name.toLowerCase().includes(lowerCaseQuery)
+      );
+      setSearchResults(filteredProducts);
+      setSuggestions([]); // Clear suggestions when showing results
+    } else {
+      setSearchResults([]);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem('token');
   };
 
   const handleLoginSuccess = (userName) => {
     setUser(userName);
     setShowLogin(false);
   };
+
   const toggleSearchBar = () => setShowSearchBar((prev) => !prev);
   const toggleMenu = () => setShowMenu((prev) => !prev);
+
+  const handleSearchInputChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.trim() === '') {
+      setSuggestions([]);
+      setSearchResults([]);
+    } else {
+      const filteredSuggestions = product_list.filter(product =>
+        product.product_name.toLowerCase().includes(query.toLowerCase())
+      ).map(product => product.product_name);
+      setSuggestions(filteredSuggestions);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion);
+    handleSearch(suggestion);
+  };
+
+  const handleSearchClear = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setSuggestions([]); // Clear suggestions as well
+  };
+
   return (
     <>
       <header>
@@ -39,54 +84,98 @@ const Header = () => {
             <img src={logo} alt="Clesa Logo" className="header-logo" />
           </div>
 
-          {/* Hamburger menu: Home, Contact Us, About Us, Shop */}
           <ul className={`nav-links ${showMenu ? 'active' : ''}`}>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/contact-us">Contact Us</Link></li>
             <li><Link to="/about-us">About Us</Link></li>
-           <li><Link to="/Skincare">Skincare</Link></li>
+            <li><Link to="/Skincare">Skincare</Link></li>
             <li><Link to="/haircare">Haircare</Link></li>
             <li><Link to="/Bodycare">Bodycare</Link></li>
-            <li><Link to="/Fragrance">Fragrance</Link></li> 
+            <li><Link to="/Fragrance">Fragrance</Link></li>
           </ul>
 
-          {/* Static items: Login, Search, and Cart */}
-          <div className="static-elements">
-          <li>
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="search-icon"
-                onClick={toggleSearchBar}
-              />
-            </li>
-            <li>
-              {user ? (
-                <>
-                  <span>Welcome, {user}</span>
-                  <button className="login-btn" onClick={handleLogout}>Logout</button>
-                </>
-              ) : (
-                <button className="login-btn" onClick={handleLoginClick}>Login</button>
-              )}
-            </li>
-            {/* Cart link added here */}
-            <li>
-            <Link to="/cart">
-              <FaShoppingCart className="cart-icon" />
-            </Link>
-            </li>
+            <div className="last-container">
+              <div>
+                {user ? (
+                  <>
+                    <span>Welcome, {user}</span>
+                    <button className="login-btn" onClick={handleLogout}>Logout</button>
+                  </>
+                ) : (
+                  <button className="login-btn" onClick={handleLoginClick}>Login</button>
+                )}
+              </div>
+              <div>
+                <Link to="/cart">
+                  <FaShoppingCart className="cart-icon" />
+                </Link>
+              </div>
+              <div>
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className="search-icon"
+                  onClick={toggleSearchBar} // Toggle the search bar visibility
+                />
+              </div>
             </div>
-          {showSearchBar && (
-            <div className="search-bar-container">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder="Search..."
-              />
-            </div>
-          )}
+        
         </nav>
+
+        {showSearchBar && (
+          <div className="search-container">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
+            />
+            {suggestions.length > 0 && searchResults.length === 0 && (
+              <ul className="search-suggestions">
+                {suggestions.map((suggestion, index) => (
+                  <li key={index} onClick={() => handleSuggestionClick(suggestion)} className="suggestion-item">
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </header>
+
+      {searchResults.length > 0 && (
+        <div className="search-results">
+          <div className="search-results-container">
+            {searchResults.map((product, index) => (
+              <div key={index} className="search-result-item">
+                <img src={product.product_image} alt={product.product_name} className="search-product-image" />
+                <p>{product.product_name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      <div>
+        <div className="search-results-container">
+          {searchResults
+            .filter(product => product.product_name.toLowerCase() !== searchQuery.toLowerCase())
+            .map((product, index) => (
+              <div key={index} className="search-result-item">
+                <img
+                  src={product.product_image}
+                  alt={product.product_name}
+                  className="search-product-image"
+                />
+                <p>{product.product_name}</p>
+              </div>
+            ))}
+        </div>
+      </div>
+      {searchResults.length === 0 && searchQuery.trim() !== '' && (
+        <p>No products found for "{searchQuery}"</p>
+      )}
+
       {showLogin && <Login onLoginSuccess={handleLoginSuccess} onClose={() => setShowLogin(false)} />}
     </>
   );

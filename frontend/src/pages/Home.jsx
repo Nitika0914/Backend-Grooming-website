@@ -41,7 +41,7 @@ const Home = ({ cart, onAddToCart }) => {
   return (
     <div className="home">
       <Header />
-      <h1 className="main-heading">Welcome to Our Store - Clesa</h1>
+      <h3 className="main-heading">Welcome to Our Store - Clesa</h3>
       <img src={homeimage} className="homeimage" alt="Home" />
       <div className="assessment-container">
         <p className="assessment-text">

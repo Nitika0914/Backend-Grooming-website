@@ -32,7 +32,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
         
         {/* Quantity Selector */}
-        <div className="quantity-container">
+        {/* <div className="quantity-container">
           <button 
             className="quantity-btn" 
             onClick={() => setQuantity(quantity - 1)} 
@@ -52,7 +52,7 @@ const ProductCard = ({ product, onAddToCart }) => {
           >
             +
           </button>
-        </div>
+        </div> */}
 
         <button
           className={`add-to-cart-btn ${added ? 'added' : ''}`}
