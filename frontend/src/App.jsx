@@ -41,13 +41,13 @@ function App() {
 
   const [showLogin, setShowLogin] = useState(false);
 
-  useEffect(() => {
-    // Show the login modal after 20 seconds
-    const timer = setTimeout(() => {
-      setShowLogin(true);
-    }, 20000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   // Show the login modal after 20 seconds
+  //   const timer = setTimeout(() => {
+  //     setShowLogin(true);
+  //   }, 20000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const handleCloseLogin = () => {
     setShowLogin(false);
@@ -61,9 +61,10 @@ function App() {
             <Route path="/" element={<Home cart={cart} onAddToCart={handleAddToCart} />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/products/:productId" element={<ProductPage />} />
+            <Route path="/products/:productId" element={<ProductPage />} /> 
             <Route path="/skincare" element={<Skincare />} />
             <Route path="/haircare" element={<Haircare />} />
+            <Route path="/login" element={<Login/>}/>
             <Route path="/bodycare" element={<Bodycare />} />
             <Route path="/fragrance" element={<Fragrance />} />
             {/* Add the Cart route here */}

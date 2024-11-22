@@ -1,15 +1,43 @@
-import React, { useState } from 'react';
-import { product_list } from '../assets/asset.js';
 import homeimage from '../assets/homeimage.png';
-import './Home.css';
 import Footer from '../components/Footer.jsx';
 import Header from '../components/Header.jsx';
-import ProductCard from '../components/ProductCard.jsx';
 import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "./Home.css";
+import ProductCard from '../components/ProductCard.jsx'; 
 
 
 const Home = ({ cart, onAddToCart }) => {
   const [quantities, setQuantities] = useState({}); // Track quantities of products
+
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/products", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+
 
   // Function to handle quantity change for each product
   const handleQuantityChange = (productId, quantity) => {
@@ -19,19 +47,7 @@ const Home = ({ cart, onAddToCart }) => {
     }));
   };
 
-  const bestsellers = product_list.slice(0, 5);
-  const cleanser = product_list.slice(0, 5);
-  const moisturizer = product_list.slice(5, 10);
-  const serums = product_list.slice(10, 15);
-  const eyecream = product_list.slice(15, 20);
-  const sunscreen = product_list.slice(20, 25);
-  const bodywash = product_list.slice(25, 30);
-  const shampoo = product_list.slice(30, 35);
-  const facemask = product_list.slice(35, 40);
-  const scrub = product_list.slice(45, 50);
-  const toner = product_list.slice(55, 60);
-  const combokit = product_list.slice(60, 65);
-  const combokits = product_list.slice(65, 70);
+  
 
   const handleAddToCart = (product) => {
     const quantity = quantities[product.product_id] || 1; // Default quantity is 1 if no input
@@ -57,97 +73,17 @@ const Home = ({ cart, onAddToCart }) => {
       </div>
       <hr></hr>
       <div className="container">
-        <CategorySection
-          title="Bestsellers"
-          products={bestsellers}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Cleansers"
-          products={cleanser}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Moisturizer"
-          products={moisturizer}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Serums"
-          products={serums}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Eyecream"
-          products={eyecream}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Sunscreen"
-          products={sunscreen}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Bodywash"
-          products={bodywash}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Shampoo"
-          products={shampoo}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Facemask"
-          products={facemask}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Scrub"
-          products={scrub}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Toner"
-          products={toner}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Combo Kit"
-          products={combokit}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
-        <CategorySection
-          title="Combo Kits"
-          products={combokits}
-          quantities={quantities}
-          onAddToCart={handleAddToCart}
-          onQuantityChange={handleQuantityChange}
-        />
+        <div className="home-container">
+          {error ? (
+            <p>{error}</p>
+          ) : (
+            <div className="products-grid">
+              {products.map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       <Footer />
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import tick from '../assets/tick.jpg';
@@ -12,6 +12,97 @@ const Login = ({ onClose, onLoginSuccess }) => {
   const loginFormRef = useRef(null);
   const signupFormRef = useRef(null);
 
+  // const handleSignup = async (e) => {
+  //   e.preventDefault();
+  //   const name = e.target.name.value;
+  //   const email = e.target.email.value;
+  //   const password = e.target.password.value;
+  //   const confirmPassword = e.target.confirmPassword.value;
+
+  //   const passwordCriteria = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
+  
+  //   if (password !== confirmPassword) {
+  //     setError('Passwords do not match');
+  //     return;
+  //   }
+  
+  //   if (!passwordCriteria.test(password)) {
+  //     setError('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+  //     return;
+  //   }
+  //   try {
+  //     const response = await fetch('http://localhost:5000/signup', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ name, email, password }),
+  //     });
+
+  //     if (response.ok) {
+  //       setIsSignedUp(true);
+  //       signupFormRef.current.reset();
+  //       setTimeout(() => {
+  //         setIsSignedUp(false);
+  //         setIsLogin(true);
+  //       }, 2000);
+  //     } else {
+  //       const errorData = await response.json();
+  //       setError(errorData.error);
+  //     }
+  //   } catch (err) {
+  //     setError('Error connecting to server');
+  //   }
+  // };
+
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   const email = e.target.email.value;
+  //   const password = e.target.password.value;
+
+  //   try {
+  //     const response = await fetch('http://localhost:5000/login', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email, password }),
+  //     });
+
+  //     if (response.ok) {
+  //       const result = await response.json();
+  //       onLoginSuccess(result.name); // Pass the name to Header
+  //       navigate('/');
+  //     } else {
+  //       const result = await response.json();
+  //       setError(result.error || 'Invalid email or password');
+  //     }
+  //   } catch (err) {
+  //     setError('Error connecting to server');
+  //   }
+  // };
+
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:5000/protected-route', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`, // Pass token in Authorization header
+              'Content-Type': 'application/json',
+            },
+          });
+          const data = await response.json();
+          console.log(data); // Handle your protected data here
+        } catch (err) {
+          console.error('Error fetching protected route:', err);
+        }
+      }
+    };
+    checkToken();
+  }, []);
+
   const handleSignup = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -19,17 +110,18 @@ const Login = ({ onClose, onLoginSuccess }) => {
     const password = e.target.password.value;
     const confirmPassword = e.target.confirmPassword.value;
 
-    const passwordCriteria = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
-  
+    const passwordCriteria = /^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{7,}$/;
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-  
-    if (!passwordCriteria.test(password)) {
-      setError('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
-      return;
-    }
+
+    // if (!passwordCriteria.test(password)) {
+    //   setError('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+    //   return;
+    // }
+
     try {
       const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
@@ -38,12 +130,11 @@ const Login = ({ onClose, onLoginSuccess }) => {
       });
 
       if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Save token in localStorage
         setIsSignedUp(true);
         signupFormRef.current.reset();
-        setTimeout(() => {
-          setIsSignedUp(false);
-          setIsLogin(true);
-        }, 2000);
+        setError('');
       } else {
         const errorData = await response.json();
         setError(errorData.error);
@@ -68,9 +159,9 @@ const Login = ({ onClose, onLoginSuccess }) => {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        onLoginSuccess(result.name); // Pass the name to Header
-        navigate('/');
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Save token in localStorage
+         navigate('/');
       } else {
         const result = await response.json();
         setError(result.error || 'Invalid email or password');
@@ -79,6 +170,10 @@ const Login = ({ onClose, onLoginSuccess }) => {
       setError('Error connecting to server');
     }
   };
+
+
+
+
 
   const closePopup = () => {
     setIsSignedUp(false);   //go to login 

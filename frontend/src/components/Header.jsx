@@ -6,7 +6,7 @@ import Login from './Login';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FaShoppingCart } from 'react-icons/fa';
-import { product_list } from '../assets/asset';
+// import { product_list } from '../assets/asset';
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -71,6 +71,58 @@ const Header = () => {
     setSuggestions([]); // Clear suggestions as well
   };
 
+//   const handleSearchInputChange = async (e) => {
+//     const query = e.target.value;
+//     setSearchQuery(query);
+
+//     if (query.trim() === "") {
+//         setSuggestions([]);
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch(`/search/products?q=${query}`);
+//         const data = await response.json();
+
+//         if (response.ok) {
+//             const productNames = data.results.map(product => product.product_name);
+//             setSuggestions(productNames); // Display product name suggestions
+//         } else {
+//             console.error(data.error);
+//         }
+//     } catch (err) {
+//         console.error("Error fetching suggestions:", err);
+//     }
+// };
+
+// const handleSuggestionClick = (suggestion) => {
+//     setSearchQuery(suggestion);
+//     setSuggestions([]);
+//     fetchSearchResults(suggestion); // Fetch full search results
+// };
+
+// const fetchSearchResults = async (query) => {
+//     try {
+//         const response = await fetch(`/search/products?q=${query}`);
+//         const data = await response.json();
+
+//         if (response.ok) {
+//             setSearchResults(data.results);
+//         } else {
+//             console.error(data.error);
+//         }
+//     } catch (err) {
+//         console.error("Error fetching search results:", err);
+//     }
+// };
+
+// const handleSearchClear = () => {
+//     setSearchQuery("");
+//     setSearchResults([]);
+//     setSuggestions([]);
+// };
+
+
   return (
     <>
       <header>
@@ -115,6 +167,7 @@ const Header = () => {
                   icon={faMagnifyingGlass}
                   className="search-icon"
                   onClick={toggleSearchBar} // Toggle the search bar visibility
+                  // onClick={() => setShowSearchBar(!showSearchBar)}
                 />
               </div>
             </div>
@@ -151,6 +204,7 @@ const Header = () => {
               <div key={index} className="search-result-item">
                 <img src={product.product_image} alt={product.product_name} className="search-product-image" />
                 <p>{product.product_name}</p>
+                {/* <p>₹{product.product_price}</p> */}
               </div>
             ))}
           </div>

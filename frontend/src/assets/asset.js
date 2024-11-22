@@ -77,352 +77,462 @@ import youtube from './youtube.png';
 import tick from './tick.jpg';
 
 
-
-
 export const product_list = [
   {
     product_name: "Gentle Skin Cleanser",
-    product_image: cleanser1,
-    product_price: 499 // Price in INR
+    product_image: "http://localhost:5000/public/cleanser1.png",
+    product_price: 349,
+    quantity: 10
   },
   {
     product_name: "Deep Cleansing Oil Cleanser",
-    product_image: cleanser2,
-    product_price: 699
+    product_image: "http://localhost:5000/public/cleanser2.png",
+    product_price: 349,
+    quantity: 15
   },
   {
     product_name: "Micellar Water Cleanser",
-    product_image: cleanser3,
-    product_price: 599
+    product_image: "http://localhost:5000/public/cleanser3.jpg",
+    product_price: 349,
+    quantity: 12
   },
   {
     product_name: "Foaming Cleanser",
-    product_image: cleanser4,
-    product_price: 549
+    product_image: "http://localhost:5000/public/cleanser4.jpg",
+    product_price: 349,
+    quantity: 8
   },
   {
     product_name: "Exfoliating Cleanser",
-    product_image: cleanser5,
-    product_price: 799
+    product_image: "http://localhost:5000/public/cleanser5.jpg",
+    product_price: 349,
+    quantity: 6
   },
   {
     product_name: "Daily Moisturizing Lotion",
-    product_image: moisturizer1,
-    product_price: 899
+    product_image: "http://localhost:5000/public/moisturizer1.jpg",
+    product_price: 899,
+    quantity: 20
   },
   {
     product_name: "Oil-Free Moisturizer",
-    product_image: moisturizer2,
-    product_price: 799
+    product_image: "http://localhost:5000/public/moisturizer2.png",
+    product_price: 799,
+    quantity: 18
   },
   {
     product_name: "Hydrating Gel Moisturizer",
-    product_image: moisturizer3,
-    product_price: 999
+    product_image: "http://localhost:5000/public/moisturizer3.png",
+    product_price: 999,
+    quantity: 14
   },
   {
     product_name: "Anti-Aging Night Cream",
-    product_image: moisturizer4,
-    product_price: 1099
+    product_image: "http://localhost:5000/public/moisturizer4.png",
+    product_price: 1099,
+    quantity: 10
   },
   {
     product_name: "Brightening Moisturizer",
-    product_image: moisturizer5,
-    product_price: 899
+    product_image: "http://localhost:5000/public/moisturizer5.jpg",
+    product_price: 899,
+    quantity: 16
   },
   {
     product_name: "Vitamin C Serum",
-    product_image: serum1,
-    product_price: 1499
+    product_image: "http://localhost:5000/public/serum1.png",
+    product_price: 999,
+    quantity: 25
   },
   {
     product_name: "Hyaluronic Acid Serum",
-    product_image: serum2,
-    product_price: 1299
+    product_image: "http://localhost:5000/public/serum2.png",
+    product_price: 999,
+    quantity: 20
   },
   {
     product_name: "Retinol Serum",
-    product_image: serum3,
-    product_price: 1399
+    product_image: "http://localhost:5000/public/serum3.png",
+    product_price: 1099,
+    quantity: 12
   },
   {
     product_name: "Niacinamide Serum",
-    product_image: serum4,
-    product_price: 1199
+    product_image: "http://localhost:5000/public/serum4.jpg",
+    product_price: 899,
+    quantity: 18
   },
   {
     product_name: "Collagen Boosting Serum",
-    product_image: serum5,
-    product_price: 1599
+    product_image: "http://localhost:5000/public/serum5.png",
+    product_price: 999,
+    quantity: 15
   },
   {
     product_name: "Anti-Wrinkle Eye Cream",
-    product_image: eyecream1,
-    product_price: 899
+    product_image: "http://localhost:5000/public/eyecream1.png",
+    product_price: 899,
+    quantity: 10
   },
   {
     product_name: "Dark Circle Eye Cream",
-    product_image: eyecream2,
-    product_price: 799
+    product_image: "http://localhost:5000/public/eyecream2.png",
+    product_price: 799,
+    quantity: 14
   },
   {
     product_name: "Puffy Eye Cream",
-    product_image: eyecream3,
-    product_price: 899
+    product_image: "http://localhost:5000/public/eyecream3.png",
+    product_price: 899,
+    quantity: 9
   },
   {
     product_name: "Hydrating Eye Cream",
-    product_image: eyecream4,
-    product_price: 999
+    product_image: "http://localhost:5000/public/eyecream4.jpg",
+    product_price: 999,
+    quantity: 6
   },
   {
     product_name: "Brightening Eye Cream",
-    product_image: eyecream5,
-    product_price: 999
+    product_image: "http://localhost:5000/public/eyecream5.jpg",
+    product_price: 999,
+    quantity: 8
   },
   {
     product_name: "SPF 30 Sunscreen",
-    product_image: sunscreen1,
-    product_price: 699
+    product_image: "http://localhost:5000/public/sunscreen1.png",
+    product_price: 699,
+    quantity: 25
   },
   {
     product_name: "SPF 50 Sunscreen",
-    product_image: sunscreen2,
-    product_price: 799
+    product_image: "http://localhost:5000/public/sunscreen2.jpg",
+    product_price: 799,
+    quantity: 20
   },
   {
     product_name: "Waterproof Sunscreen",
-    product_image: sunscreen3,
-    product_price: 899
+    product_image: "http://localhost:5000/public/sunscreen3.jpg",
+    product_price: 899,
+    quantity: 18
   },
   {
     product_name: "Tinted Sunscreen",
-    product_image: sunscreen4,
-    product_price: 799
+    product_image: "http://localhost:5000/public/sunscreen4.jpg",
+    product_price: 799,
+    quantity: 22
   },
   {
     product_name: "Mineral Sunscreen",
-    product_image: sunscreen5,
-    product_price: 799
+    product_image: "http://localhost:5000/public/sunscreen5.jpg",
+    product_price: 799,
+    quantity: 17
   },
   {
     product_name: "Refreshing Body Wash",
-    product_image: bodywash1,
-    product_price: 499
+    product_image: "http://localhost:5000/public/bodywash1.png",
+    product_price: 499,
+    quantity: 30
   },
   {
     product_name: "Exfoliating Body Wash",
-    product_image: bodywash2,
-    product_price: 599
+    product_image: "http://localhost:5000/public/bodywash2.jpg",
+    product_price: 599,
+    quantity: 25
   },
   {
     product_name: "Hydrating Body Wash",
-    product_image: bodywash3,
-    product_price: 599
+    product_image: "http://localhost:5000/public/bodywash3.jpg",
+    product_price: 599,
+    quantity: 20
   },
   {
     product_name: "Nourishing Body Wash",
-    product_image: bodywash4,
-    product_price: 649
+    product_image: "http://localhost:5000/public/bodywash4.png",
+    product_price: 649,
+    quantity: 15
   },
   {
     product_name: "Soothing Body Wash",
-    product_image: bodywash5,
-    product_price: 599
+    product_image: "http://localhost:5000/public/bodywash5.png",
+    product_price: 599,
+    quantity: 18
   },
   {
     product_name: "Volumizing Shampoo",
-    product_image: shampoo1,
-    product_price: 699
+    product_image: "http://localhost:5000/public/shampoo1.png",
+    product_price: 699,
+    quantity: 12
   },
   {
     product_name: "Anti-Dandruff Shampoo",
-    product_image: shampoo2,
-    product_price: 649
+    product_image: "http://localhost:5000/public/shampoo2.jpg",
+    product_price: 649,
+    quantity: 10
   },
   {
     product_name: "Moisturizing Shampoo",
-    product_image: shampoo3,
-    product_price: 799
+    product_image: "http://localhost:5000/public/shampoo3.jpg",
+    product_price: 799,
+    quantity: 16
   },
   {
     product_name: "Color Protect Shampoo",
-    product_image: shampoo4,
-    product_price: 799
+    product_image: "http://localhost:5000/public/shampoo4.jpg",
+    product_price: 799,
+    quantity: 14
   },
   {
     product_name: "Clarifying Shampoo",
-    product_image: shampoo5,
-    product_price: 749
+    product_image: "http://localhost:5000/public/shampoo5.png",
+    product_price: 749,
+    quantity: 8
   },
   {
     product_name: "Brightening Face Mask",
-    product_image: facemask1,
-    product_price: 499
+    product_image: "http://localhost:5000/public/facemask1.png",
+    product_price: 499,
+    quantity: 20
   },
   {
     product_name: "Hydrating Face Mask",
-    product_image: facemask2,
-    product_price: 599
+    product_image: "http://localhost:5000/public/facemask2.png",
+    product_price: 599,
+    quantity: 15
   },
   {
     product_name: "Detoxifying Face Mask",
-    product_image: facemask3,
-    product_price: 649
+    product_image: "http://localhost:5000/public/facemask3.jpg",
+    product_price: 649,
+    quantity: 18
   },
   {
     product_name: "Anti-Aging Face Mask",
-    product_image: facemask4,
-    product_price: 699
+    product_image: "http://localhost:5000/public/facemask4.jpg",
+    product_price: 699,
+    quantity: 10
   },
   {
     product_name: "Soothing Face Mask",
-    product_image: facemask5,
-    product_price: 599
+    product_image: "http://localhost:5000/public/facemask5.jpg",
+    product_price: 599,
+    quantity: 22
   },
   {
     product_name: "Citrus Fragrance",
-    product_image: fragrance1,
-    product_price: 499
+    product_image: "http://localhost:5000/public/fragrance1.png",
+    product_price: 499,
+    quantity: 14
   },
   {
     product_name: "Floral Fragrance",
-    product_image: fragrance2,
-    product_price: 599
+    product_image: "http://localhost:5000/public/fragrance2.jpg",
+    product_price: 599,
+    quantity: 18
   },
   {
     product_name: "Woody Fragrance",
-    product_image: fragrance3,
-    product_price: 649
+    product_image: "http://localhost:5000/public/fragrance3.jpg",
+    product_price: 649,
+    quantity: 16
   },
   {
     product_name: "Fresh Fragrance",
-    product_image: fragrance4,
-    product_price: 699
+    product_image: "http://localhost:5000/public/fragrance4.jpg",
+    product_price: 699,
+    quantity: 12
   },
   {
     product_name: "Oriental Fragrance",
-    product_image: fragrance5,
-    product_price: 799
+    product_image: "http://localhost:5000/public/fragrance5.png",
+    product_price: 799,
+    quantity: 10
   },
   {
     product_name: "Exfoliating Scrub",
-    product_image: scrub1,
-    product_price: 499
+    product_image: "http://localhost:5000/public/scrub1.png",
+    product_price: 499,
+    quantity: 20
   },
   {
     product_name: "Brightening Scrub",
-    product_image: scrub2,
-    product_price: 599
+    product_image: "http://localhost:5000/public/scrub2.png",
+    product_price: 599,
+    quantity: 18
   },
   {
     product_name: "Deep Cleansing Scrub",
-    product_image: scrub3,
-    product_price: 649
+    product_image: "http://localhost:5000/public/scrub3.jpg",
+    product_price: 649,
+    quantity: 15
   },
   {
     product_name: "Moisturizing Scrub",
-    product_image: scrub4,
-    product_price: 699
+    product_image: "http://localhost:5000/public/scrub4.jpg",
+    product_price: 699,
+    quantity: 10
   },
   {
     product_name: "Soothing Scrub",
-    product_image: scrub5,
-    product_price: 599
+    product_image: "http://localhost:5000/public/scrub5.jpg",
+    product_price: 599,
+    quantity: 13
+  },
+  {
+    product_name: "Hyaluronic Acid Serum",
+    product_image: "http://localhost:5000/public/serum2.png",
+    product_price: 999,
+    quantity: 22
+  },
+  {
+    product_name: "Retinol Serum",
+    product_image: "http://localhost:5000/public/serum3.png",
+    product_price: 1099,
+    quantity: 13
+  },
+  {
+    product_name: "Niacinamide Serum",
+    product_image: "http://localhost:5000/public/serum4.jpg",
+    product_price: 899,
+    quantity: 19
+  },
+  {
+    product_name: "Collagen Boosting Serum",
+    product_image: "http://localhost:5000/public/serum5.png",
+    product_price: 999,
+    quantity: 17
+  },
+  {
+    product_name: "Anti-Wrinkle Eye Cream",
+    product_image: "http://localhost:5000/public/eyecream1.png",
+    product_price: 899,
+    quantity: 14
+  },
+  {
+    product_name: "Dark Circle Eye Cream",
+    product_image: "http://localhost:5000/public/eyecream2.png",
+    product_price: 799,
+    quantity: 12
+  },
+  {
+    product_name: "Puffy Eye Cream",
+    product_image: "http://localhost:5000/public/eyecream3.png",
+    product_price: 899,
+    quantity: 18
+  },
+  {
+    product_name: "Hydrating Eye Cream",
+    product_image: "http://localhost:5000/public/eyecream4.jpg",
+    product_price: 999,
+    quantity: 16
+  },
+  {
+    product_name: "Brightening Eye Cream",
+    product_image: "http://localhost:5000/public/eyecream5.jpg",
+    product_price: 999,
+    quantity: 14
   },
   {
     product_name: "Hair Repair Serum",
-    product_image: hairserum1,
-    product_price: 999
+    product_image: "http://localhost:5000/public/hairserum1.png",
+    product_price: 999,
+    quantity: 20
   },
   {
     product_name: "Anti-Frizz Hair Serum",
-    product_image: hairserum2,
-    product_price: 1099
+    product_image: "http://localhost:5000/public/hairserum2.jpg",
+    product_price: 1099,
+    quantity: 18
   },
   {
     product_name: "Hair Growth Serum",
-    product_image: hairserum3,
-    product_price: 1299
+    product_image: "http://localhost:5000/public/hairserum3.jpg",
+    product_price: 1299,
+    quantity: 14
   },
   {
     product_name: "Volumizing Hair Serum",
-    product_image: hairserum4,
-    product_price: 1199
+    product_image: "http://localhost:5000/public/hairserum4.png",
+    product_price: 1199,
+    quantity: 12
   },
   {
     product_name: "Color Protect Hair Serum",
-    product_image: hairserum5,
-    product_price: 1399
+    product_image: "http://localhost:5000/public/hairserum5.png",
+    product_price: 1399,
+    quantity: 10
   },
   {
     product_name: "Refreshing Toner",
-    product_image: toner1,
-    product_price: 499
+    product_image: "http://localhost:5000/public/toner1.png",
+    product_price: 499,
+    quantity: 22
   },
   {
     product_name: "Hydrating Toner",
-    product_image: toner2,
-    product_price: 599
+    product_image: "http://localhost:5000/public/toner2.png",
+    product_price: 599,
+    quantity: 18
   },
   {
     product_name: "Brightening Toner",
-    product_image: toner3,
-    product_price: 649
+    product_image: "http://localhost:5000/public/toner3.png",
+    product_price: 649,
+    quantity: 16
   },
   {
     product_name: "Pore Minimizing Toner",
-    product_image: toner4,
-    product_price: 699
+    product_image: "http://localhost:5000/public/toner4.png",
+    product_price: 699,
+    quantity: 14
   },
   {
     product_name: "Anti-Aging Toner",
-    product_image: toner5,
-    product_price: 799
+    product_image: "http://localhost:5000/public/toner5.png",
+    product_price: 799,
+    quantity: 20
   },
   {
     product_name: "Ultimate Skincare Combo Kit",
-    product_image: combokit1,
-    product_price: 2999
+    product_image: "http://localhost:5000/public/combokit1.png",
+    product_price: 2999,
+    quantity: 8
   },
   {
     product_name: "Daily Essentials Combo Kit",
-    product_image: combokit2,
-    product_price: 2499
+    product_image: "http://localhost:5000/public/combokit2.png",
+    product_price: 1999,
+    quantity: 12
   },
   {
-    product_name: "Anti-Aging Combo Kit",
-    product_image: combokit3,
-    product_price: 3299
+    product_name: "Glow & Radiance Combo Kit",
+    product_image: "http://localhost:5000/public/combokit3.png",
+    product_price: 2499,
+    quantity: 10
   },
   {
-    product_name: "Brightening Combo Kit",
-    product_image: combokit4,
-    product_price: 2799
-  },
-  {
-    product_name: "Hydration Combo Kit",
-    product_image: combokit5,
-    product_price: 2599
-  },
-  {
-    product_name: "Oil Control Combo Kit",
-    product_image: combokit6,
-    product_price: 2499
-  },
-  {
-    product_name: "Sensitive Skin Combo Kit",
-    product_image: combokit7,
-    product_price: 2699
-  },
-  {
-    product_name: "Travel Size Combo Kit",
-    product_image: combokit8,
-    product_price: 1999
-  },
-  {
-    product_name: "All-in-One Skincare Kit",
-    product_image: combokit9,
-    product_price: 3599
+    product_name: "exfoliating Combo Kit",
+    product_image: "http://localhost:5000/public/combokit4.png",
+    product_price: 2499,
+    quantity: 10
   }
 ];
+  
+
+
+// Function to send product data to backend
+fetch('http://localhost:5000/add-products', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(product_list)
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
+
+// product_list.map((ele) => {
+//   <img src={ele.products_url}></img>
+// })
