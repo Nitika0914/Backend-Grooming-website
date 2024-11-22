@@ -1,12 +1,12 @@
-/*
+
 .product-price{
   margin-top: 5%;
   
 }
 
 .add-to-cart-btn {
+  margin-right: 6%;
     margin-top: 5%;
-    margin-left: 20%;
     background-color: #4caf50;
     color: white;
     padding: 10px 20px;
@@ -65,14 +65,10 @@
     border: 1px solid #ddd;
     padding: 5px;
     font-size: 16px;
-  }*/
-
-
-
-
+  }
 
   .product-card {
-    padding: 8px 8px;
+    padding: 10px 10px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
     background-color: #ffffff; /* White background for contrast */
@@ -119,4 +115,3 @@
     color: #1a73e8; /* Blue color for the price */
     margin-top: 12px; /* Add space above the price */
   }
-  

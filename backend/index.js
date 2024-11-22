@@ -351,6 +351,44 @@ app.post('/api/products', (req, res) => {
 // Check if the 'Product' model is already defined
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
+////////////////////
+// Define Assessment Schema
+const assessmentSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    skinType: { type: String, required: true },
+    question1: { type: String, required: true },
+    question2: [{ type: String }], // Array to store multiple selections
+    feedback: { type: String, required: true },
+    consent: { type: Boolean, required: true },
+});
+
+// Create Assessment Model
+const Assessment = mongoose.model('Assessment', assessmentSchema);
+
+// Endpoint to handle assessment form submission
+app.post('/api/submit-assessment', async (req, res) => {
+    try {
+        console.log('POST request received at /api/submit-assessment');
+        const formData = req.body; // Access the parsed JSON body
+        console.log('Form Data Received:', formData);
+
+        // Save data to MongoDB
+        const newAssessment = new Assessment(formData);
+        await newAssessment.save(); // Save to the database
+
+        res.status(200).json({ message: 'Assessment submitted successfully!' });
+    } catch (error) {
+        console.error('Error handling submission:', error);
+        res.status(400).json({ error: 'Invalid data format' });
+    }
+});
+
+/////////////////////
+
+
+
+
+
 
 
 // Search Products Endpoint

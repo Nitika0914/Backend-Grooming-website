@@ -15,6 +15,7 @@ import Cart from './pages/Cart';  // Import the Cart component
 import AssessmentForm from './components/AssessmentForm'; // Import the AssessmentForm component
 import './App.css';
 
+
 function App() {
   const [cart, setCart] = useState([]); // cart state is now in App.jsx
 
@@ -67,18 +68,14 @@ function App() {
             <Route path="/login" element={<Login/>}/>
             <Route path="/bodycare" element={<Bodycare />} />
             <Route path="/fragrance" element={<Fragrance />} />
-            {/* Add the Cart route here */}
-            <Route
-              path="/cart"
+            <Route path="/cart"
               element={
                 <Cart
                   cart={cart}
                   onRemoveFromCart={handleRemoveFromCart}
                   onUpdateQuantity={handleUpdateQuantity} // Pass the function
                 />
-              }
-            />
-            {/* Add the AssessmentForm route */}
+              }/>
             <Route path="/assessment-form" element={<AssessmentForm />} />
           </Routes>
         </main>
