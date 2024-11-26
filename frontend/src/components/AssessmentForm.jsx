@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import './AssessmentForm.css';
+import './AssessmentForm.css'
 
 const AssessmentForm = () => {
   const [formData, setFormData] = useState({

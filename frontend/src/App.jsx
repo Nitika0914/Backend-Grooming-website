@@ -11,10 +11,10 @@ import Bodycare from './pages/Bodycare';
 import Fragrance from './pages/Fragrance';
 import Footer from './components/Footer';
 import Login from './components/Login';
-import Cart from './pages/Cart';  // Import the Cart component
-import AssessmentForm from './components/AssessmentForm'; // Import the AssessmentForm component
+import Cart from './pages/Cart';
+import AssessmentForm from './components/AssessmentForm';
+import {CartProvider} from './contexts/CartContext';
 import './App.css';
-
 
 function App() {
   const [cart, setCart] = useState([]); // cart state is now in App.jsx
@@ -42,21 +42,12 @@ function App() {
 
   const [showLogin, setShowLogin] = useState(false);
 
-  // useEffect(() => {
-  //   // Show the login modal after 20 seconds
-  //   const timer = setTimeout(() => {
-  //     setShowLogin(true);
-  //   }, 20000);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
   const handleCloseLogin = () => {
     setShowLogin(false);
   };
-
-  return (
+return (
+  <CartProvider value={{ cart, setCart }}> {/* Wrap with CartContext.Provider */}
     <Router>
-      <div>
         <main>
           <Routes>
             <Route path="/" element={<Home cart={cart} onAddToCart={handleAddToCart} />} />
@@ -68,21 +59,22 @@ function App() {
             <Route path="/login" element={<Login/>}/>
             <Route path="/bodycare" element={<Bodycare />} />
             <Route path="/fragrance" element={<Fragrance />} />
-            <Route path="/cart"
-              element={
-                <Cart
-                  cart={cart}
-                  onRemoveFromCart={handleRemoveFromCart}
-                  onUpdateQuantity={handleUpdateQuantity} // Pass the function
-                />
-              }/>
+            <Route path="/" element={<Home onAddToCart={handleAddToCart} />} />
             <Route path="/assessment-form" element={<AssessmentForm />} />
+            <Route path="/cart"
+               element={
+                 <Cart
+                   cart={cart}
+                   onRemoveFromCart={handleRemoveFromCart}
+                   onUpdateQuantity={handleUpdateQuantity} // Pass the function
+                 />
+               }/>
           </Routes>
         </main>
         {showLogin && <Login onClose={handleCloseLogin} />}
-      </div>
     </Router>
-  );
+  </CartProvider>
+);
 }
 
 export default App;

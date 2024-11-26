@@ -521,16 +521,16 @@ export const product_list = [
 
 
 // Function to send product data to backend
-fetch('http://localhost:5000/add-products', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(product_list)
-})
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
+// fetch('http://localhost:5000/add-products', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+//   body: JSON.stringify(product_list)
+// })
+//   .then(response => response.json())
+//   .then(data => console.log(data))
+//   .catch(error => console.error('Error:', error));
 
 
 // product_list.map((ele) => {
