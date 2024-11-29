@@ -3,9 +3,9 @@ const Product = require('../models/Product');
 // Controller to handle the creation of products
 const createProducts = async (req, res) => {
   try {
-    const products = req.body.products;  // Products array sent from the frontend
+    const products = req.body.products;
 
-    // Insert multiple products at once
+    
     await Product.insertMany(products);
 
     res.status(201).json({ message: 'Products added successfully' });

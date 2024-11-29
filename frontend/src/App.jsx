@@ -14,6 +14,7 @@ import Login from './components/Login';
 import Cart from './pages/Cart';
 import AssessmentForm from './components/AssessmentForm';
 import {CartProvider} from './contexts/CartContext';
+import Profile from './components/profile';
 import './App.css';
 
 function App() {
@@ -58,8 +59,8 @@ return (
             <Route path="/haircare" element={<Haircare />} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/bodycare" element={<Bodycare />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/fragrance" element={<Fragrance />} />
-            <Route path="/" element={<Home onAddToCart={handleAddToCart} />} />
             <Route path="/assessment-form" element={<AssessmentForm />} />
             <Route path="/cart"
                element={

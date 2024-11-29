@@ -23,7 +23,7 @@ const Home = ({ cart, onAddToCart }) => {
           },
         });
 
-        if (!response.ok) {
+        if (!response.ok){
           throw new Error("Failed to fetch products");
         }
 

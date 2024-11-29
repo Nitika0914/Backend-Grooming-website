@@ -16,28 +16,28 @@ function ProductCard({ product, currentUserId }) {
     }
   }, [added]);
 
-  const addToCart = async (productId, quantity) => {
-    try {
-      const response = await fetch("http://localhost:5000/api/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: currentUserId,
-          productId,
-          quantity,
-        }),
-      });
+  // const addToCart = async (productId, quantity) => {
+  //   try {
+  //     const response = await fetch("http://localhost:5000/api/cart", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         userId: currentUserId,
+  //         productId,
+  //         quantity,
+  //       }),
+  //     });
 
-      if (!response.ok) throw new Error("Failed to add to cart");
+  //     if (!response.ok) throw new Error("Failed to add to cart");
 
-      const data = await response.json();
-      alert("Item added to cart!");
-      setAdded(true); // Update state to reflect the successful addition
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-      alert("Could not add to cart");
-    }
-  };
+  //     const data = await response.json();
+  //     alert("Item added to cart!");
+  //     setAdded(true); // Update state to reflect the successful addition
+  //   } catch (err) {
+  //     console.error("Error adding to cart:", err);
+  //     alert("Could not add to cart");
+  //   }
+  // };
 
   const handleAddToCart = () => {
     // Use context if available, otherwise fallback to API

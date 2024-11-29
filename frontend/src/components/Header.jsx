@@ -6,7 +6,6 @@ import Login from './Login';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FaShoppingCart } from 'react-icons/fa';
-// import { product_list } from '../assets/asset';
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -18,20 +17,6 @@ const Header = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   const handleLoginClick = () => setShowLogin(true);
-
-  const handleSearch = (query) => {
-    const lowerCaseQuery = query.toLowerCase().trim();
-    if (lowerCaseQuery) {
-      const filteredProducts = product_list.filter(product =>
-        product.product_name.toLowerCase().includes(lowerCaseQuery)
-      );
-      setSearchResults(filteredProducts);
-      setSuggestions([]); // Clear suggestions when showing results
-    } else {
-      setSearchResults([]);
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   const handleLogout = () => {
     setUser(null);
@@ -46,82 +31,68 @@ const Header = () => {
   const toggleSearchBar = () => setShowSearchBar((prev) => !prev);
   const toggleMenu = () => setShowMenu((prev) => !prev);
 
-  const handleSearchInputChange = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (query.trim() === '') {
-      setSuggestions([]);
-      setSearchResults([]);
-    } else {
-      const filteredSuggestions = product_list.filter(product =>
-        product.product_name.toLowerCase().includes(query.toLowerCase())
-      ).map(product => product.product_name);
-      setSuggestions(filteredSuggestions);
-    }
-  };
-
   const handleSuggestionClick = (suggestion) => {
     setSearchQuery(suggestion);
     handleSearch(suggestion);
   };
 
   const handleSearchClear = () => {
-    setSearchQuery('');
-    setSearchResults([]);
-    setSuggestions([]); // Clear suggestions as well
+    setSearchQuery(''); // Clear search input
+    setSearchResults([]); // Reset search results
+    setSuggestions([]); // Clear suggestions
   };
 
-//   const handleSearchInputChange = async (e) => {
-//     const query = e.target.value;
-//     setSearchQuery(query);
+  const handleSearchInputChange = async (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
 
-//     if (query.trim() === "") {
-//         setSuggestions([]);
-//         return;
-//     }
+    if (query.trim() === '') {
+      setSuggestions([]);
+      setSearchResults([]); // Clear results when query is empty
+      return;
+    }
 
-//     try {
-//         const response = await fetch(`/search/products?q=${query}`);
-//         const data = await response.json();
+    try {
+      const response = await fetch(
+        `http://localhost:5000/search/products?q=${encodeURIComponent(query)}`
+      );
+      const data = await response.json();
 
-//         if (response.ok) {
-//             const productNames = data.results.map(product => product.product_name);
-//             setSuggestions(productNames); // Display product name suggestions
-//         } else {
-//             console.error(data.error);
-//         }
-//     } catch (err) {
-//         console.error("Error fetching suggestions:", err);
-//     }
-// };
+      if (response.ok) {
+        const productNames = data.results.map((product) => product.product_name);
+        setSuggestions(productNames); // Populate suggestions
+      } else {
+        console.error(data.error);
+      }
+    } catch (err) {
+      console.error('Error fetching suggestions:', err);
+    }
+  };
 
-// const handleSuggestionClick = (suggestion) => {
-//     setSearchQuery(suggestion);
-//     setSuggestions([]);
-//     fetchSearchResults(suggestion); // Fetch full search results
-// };
+  const handleSearch = async (query) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/search/products?q=${encodeURIComponent(query)}`
+      );
 
-// const fetchSearchResults = async (query) => {
-//     try {
-//         const response = await fetch(`/search/products?q=${query}`);
-//         const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`Failed to fetch search results: ${response.statusText}`);
+      }
 
-//         if (response.ok) {
-//             setSearchResults(data.results);
-//         } else {
-//             console.error(data.error);
-//         }
-//     } catch (err) {
-//         console.error("Error fetching search results:", err);
-//     }
-// };
+      const data = await response.json();
 
-// const handleSearchClear = () => {
-//     setSearchQuery("");
-//     setSearchResults([]);
-//     setSuggestions([]);
-// };
+      if (data.results && Array.isArray(data.results)) {
+        setSearchResults(data.results);
+      } else {
+        console.error('Unexpected response format:', data);
+      }
+    } catch (err) {
+      console.error('Error fetching search results:', err);
+    }
 
+    // Scroll to top after search
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -146,32 +117,30 @@ const Header = () => {
             <li><Link to="/Fragrance">Fragrance</Link></li>
           </ul>
 
-            <div className="last-container">
-              <div>
-                {user ? (
-                  <>
-                    <span>Welcome, {user}</span>
-                    <button className="login-btn" onClick={handleLogout}>Logout</button>
-                  </>
-                ) : (
-                  <button className="login-btn" onClick={handleLoginClick}>Login</button>
-                )}
-              </div>
-              <div>
-                <Link to="/cart">
-                  <FaShoppingCart className="cart-icon" />
-                </Link>
-              </div>
-              <div>
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="search-icon"
-                  onClick={toggleSearchBar} // Toggle the search bar visibility
-                  // onClick={() => setShowSearchBar(!showSearchBar)}
-                />
-              </div>
+          <div className="last-container">
+            <div>
+              {user ? (
+                <>
+                  <span>Welcome, {user}</span>
+                  <button className="login-btn" onClick={handleLogout}>Logout</button>
+                </>
+              ) : (
+                <button className="login-btn" onClick={handleLoginClick}>Login</button>
+              )}
             </div>
-        
+            <div>
+              <Link to="/cart">
+                <FaShoppingCart className="cart-icon" />
+              </Link>
+            </div>
+            <div>
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="search-icon"
+                onClick={toggleSearchBar}
+              />
+            </div>
+          </div>
         </nav>
 
         {showSearchBar && (
@@ -182,12 +151,21 @@ const Header = () => {
               placeholder="Search products..."
               value={searchQuery}
               onChange={handleSearchInputChange}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
             />
-            {suggestions.length > 0 && searchResults.length === 0 && (
+            {searchQuery && (
+              <button className="clear-btn" onClick={handleSearchClear}>
+                Clear
+              </button>
+            )}
+            {suggestions.length > 0 && (
               <ul className="search-suggestions">
                 {suggestions.map((suggestion, index) => (
-                  <li key={index} onClick={() => handleSuggestionClick(suggestion)} className="suggestion-item">
+                  <li
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="suggestion-item"
+                  >
                     {suggestion}
                   </li>
                 ))}
@@ -197,42 +175,27 @@ const Header = () => {
         )}
       </header>
 
-      {searchResults.length > 0 && (
-        <div className="search-results">
-          <div className="search-results-container">
-            {searchResults.map((product, index) => (
-              <div key={index} className="search-result-item">
-                <img src={product.product_image} alt={product.product_name} className="search-product-image" />
+      {searchResults.length > 0 ? (
+        <div className="search-results-container">
+          {searchResults.map((product) => (
+            <div key={product._id} className="search-result-item">
+              <img
+                src={product.product_image || '/placeholder.jpg'}
+                alt={product.product_name}
+                className="search-product-image"
+                />
                 <p>{product.product_name}</p>
-                {/* <p>₹{product.product_price}</p> */}
+                <p>₹{product.product_price}</p>
               </div>
             ))}
           </div>
-        </div>
-      )}
-      <div>
-        <div className="search-results-container">
-          {searchResults
-            .filter(product => product.product_name.toLowerCase() !== searchQuery.toLowerCase())
-            .map((product, index) => (
-              <div key={index} className="search-result-item">
-                <img
-                  src={product.product_image}
-                  alt={product.product_name}
-                  className="search-product-image"
-                />
-                <p>{product.product_name}</p>
-              </div>
-            ))}
-        </div>
-      </div>
-      {searchResults.length === 0 && searchQuery.trim() !== '' && (
-        <p>No products found for "{searchQuery}"</p>
-      )}
-
-      {showLogin && <Login onLoginSuccess={handleLoginSuccess} onClose={() => setShowLogin(false)} />}
-    </>
-  );
-};
-
-export default Header;
+        ) : (
+          searchQuery.trim() !== '' && <p>No products found for "{searchQuery}"</p>
+        )}
+  
+        {showLogin && <Login onLoginSuccess={handleLoginSuccess} onClose={() => setShowLogin(false)} />}
+      </>
+    );
+  };
+  
+  export default Header;
