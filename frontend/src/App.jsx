@@ -15,6 +15,7 @@ import Cart from './pages/Cart';
 import AssessmentForm from './components/AssessmentForm';
 import {CartProvider} from './contexts/CartContext';
 import Profile from './components/profile';
+import AdminPage from './components/AdminPage';
 import './App.css';
 
 function App() {
@@ -60,6 +61,7 @@ return (
             <Route path="/login" element={<Login/>}/>
             <Route path="/bodycare" element={<Bodycare />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/AdminPage" element={<AdminPage />} />
             <Route path="/fragrance" element={<Fragrance />} />
             <Route path="/assessment-form" element={<AssessmentForm />} />
             <Route path="/cart"

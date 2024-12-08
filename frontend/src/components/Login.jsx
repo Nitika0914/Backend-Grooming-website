@@ -7,6 +7,7 @@ const Login = ({ onClose, onLoginSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isSignedUp, setIsSignedUp] = useState(false);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('login'); // Track active tab (login, signup, adminLogin)
   const navigate = useNavigate();
 
   const loginFormRef = useRef(null);
@@ -57,7 +58,7 @@ const Login = ({ onClose, onLoginSuccess }) => {
       const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email,confirmPassword, password }),
+        body: JSON.stringify({ name, email, confirmPassword, password }),
       });
 
       if (response.ok) {
@@ -92,10 +93,35 @@ const Login = ({ onClose, onLoginSuccess }) => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token); // Save token in localStorage
-         navigate('/profile');
+        navigate('/profile');
       } else {
         const result = await response.json();
         setError(result.error || 'Invalid email or password');
+      }
+    } catch (err) {
+      setError('Error connecting to server');
+    }
+  };
+
+  const handleAdminLogin = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    try {
+      const response = await fetch('http://localhost:5000/get-all-admins', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('adminToken', data.token);
+        navigate('/AdminPage');
+      } else {
+        const result = await response.json();
+        setError(result.error || 'Invalid admin credentials');
       }
     } catch (err) {
       setError('Error connecting to server');
@@ -124,17 +150,26 @@ const Login = ({ onClose, onLoginSuccess }) => {
         <button className="close-btn" onClick={onClose}>X</button>
         <div className="form-toggle">
           <button
-            className={isLogin ? 'active' : ''}
-            onClick={() => setIsLogin(true)} >
+            className={activeTab === 'login' ? 'active' : ''}
+            onClick={() => setActiveTab('login')}
+          >
             Login
           </button>
           <button
-            className={!isLogin ? 'active' : ''}
-            onClick={() => setIsLogin(false)} >
+            className={activeTab === 'signup' ? 'active' : ''}
+            onClick={() => setActiveTab('signup')}
+          >
             Signup
           </button>
+          <button
+            className={activeTab === 'adminLogin' ? 'active' : ''}
+            onClick={() => setActiveTab('adminLogin')}
+          >
+            Admin Panel
+          </button>
         </div>
-        {isLogin ? (
+
+        {activeTab === 'login' && (
           <div className="form">
             <h2>Log in</h2>
             {error && <p className="error">{error}</p>}
@@ -142,11 +177,14 @@ const Login = ({ onClose, onLoginSuccess }) => {
               <input type="email" name="email" placeholder="Email" required />
               <input type="password" name="password" placeholder="Password" required />
               <a href="#">Forgot Password?</a>
-              <p>Not a member? <a href="#" onClick={() => setIsLogin(false)}>Sign up now</a></p>
+              <p>Not a member? <a href="#" onClick={() => setActiveTab('signup')}>Sign up now</a></p>
+              <p>Login as Admin? <a href="#" onClick={() => setActiveTab('adminLogin')}>Click here</a></p>
               <button type="submit" className="submit-btn">Login</button>
             </form>
           </div>
-        ) : (
+        )}
+
+        {activeTab === 'signup' && (
           <div className="form">
             <h2>Sign up</h2>
             {error && <p className="error">{error}</p>}
@@ -157,7 +195,21 @@ const Login = ({ onClose, onLoginSuccess }) => {
               <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
               <button type="submit" className="submit-btn">Sign Up</button>
             </form>
-            <p>Already a member? <a href="#" onClick={() => setIsLogin(true)}>Login now</a></p>
+            <p>Already a member? <a href="#" onClick={() => setActiveTab('login')}>Login now</a></p>
+          </div>
+        )}
+
+        {activeTab === 'adminLogin' && (
+          <div className="form">
+            <h2>Admin Panel</h2>
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleAdminLogin}>
+              <input type="email" name="email" placeholder="Email" required />
+              <input type="password" name="password" placeholder="Password" required />
+              <button type="submit" className="submit-btn">
+                Admin Login
+              </button>
+            </form>
           </div>
         )}
       </div>

@@ -5,20 +5,20 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 const productRoutes = require('./routes/productRoutes');
+const adminRoutes = require('./routes/adminRoutes'); 
 const multer = require('multer');
 const fs=require('fs');
 
 
 const secretKey = "secretkey";
 
-// Serve static files (images, JS, CSS) from the 'frontend' folder
-app.use('/public', express.static(path.join(__dirname, 'public')));
-
-
 // Middleware
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(cors()); // Enable CORS for all routes
+app.use(bodyParser.json()); 
 
 // MongoDB connection
 const Mongo_url = "mongodb+srv://payal647be22:payal066@skincare.vyux8.mongodb.net/skincare?retryWrites=true&w=majority&appName=skincare";
@@ -217,19 +217,6 @@ app.post('/upload-avatar', authenticate, upload.single('avatar'), async (req, re
     }
 });
 
-// Create Products endpoint - to send products to backend
-// app.post('/api/products', (req, res) => {
-//     const newProduct = new Product(req.body);
-  
-//     newProduct.save()
-//       .then((product) => {
-//         res.status(201).json({ message: 'Product added', product });
-//       })
-//       .catch((error) => {
-//         console.error('Error adding product:', error);
-//         res.status(500).json({ message: 'Error adding product', error });
-//       });
-//   });
   
 // Route for getting all products - to get all products from backend
 app.get('/api/products', async (req, res) => {
@@ -293,7 +280,6 @@ app.post('/api/submit-assessment', async (req, res) => {
 
 
 //search api
-// Search products based on the query
 const productSchema = new mongoose.Schema({
     product_name: { type: String, required: true },
     product_image: { type: String, required: true },
@@ -317,7 +303,141 @@ const productSchema = new mongoose.Schema({
 
 
 
+//admin panel - to get admin details to mongodb
+const Admin = require('./models/admin');
+app.use('/admin', adminRoutes);
+app.post('/admin-register', async (req, res) => {
+    const { name, email, password, role } = req.body;
+    if (!password) {
+        return res.status(400).json({ error: 'Password is required' });
+    }
 
+    try {
+        const existingUser = await Admin.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Email already exists' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newAdmin = new Admin({ name, email, password: hashedPassword, role });
+
+        await newAdmin.save()
+            .then((savedAdmin) => {
+                console.log('Admin saved:', savedAdmin); // Log the saved admin object
+                const token = newAdmin.generateAuthToken();
+                res.status(201).json({ message: 'Admin created', token });
+            })
+            .catch((err) => {
+                console.error('Error saving admin:', err); // Log the error in case of failure
+                res.status(500).json({ error: 'Database error', message: err.message });
+            });
+
+    } catch (err) {
+        console.error('Error creating admin:', err);
+        res.status(500).json({ error: 'Database error', message: err.message });
+    }
+});
+
+
+
+app.post('/get-all-admins', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if the email exists in the database
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      console.error('Admin not found:', email); // Debug log
+      return res.status(401).json({ error: 'Invalid admin credentials' });
+    }
+
+    // Validate the password using bcrypt
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+    if (!isPasswordValid) {
+      console.error('Password mismatch for email:', email); // Debug log
+      return res.status(401).json({ error: 'Invalid admin credentials' });
+    }
+
+    // Generate and send a token (if applicable)
+    const token = 'someAuthToken'; // Replace with actual token generation logic
+    res.status(200).json({ message: 'Admin authenticated', token });
+  } catch (err) {
+    console.error('Error during admin authentication:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
+/////////////  ////
+const storage1 = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, './public'); // Folder where images will be stored
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname)); // File name will include timestamp
+    }
+  });
+// File filter to allow only image files
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed'), false);
+    }
+  };
+  const upload1 = multer({ 
+    storage: storage1, 
+    fileFilter: fileFilter 
+});
+
+
+// Serve static files from the 'public' folder (including images)
+app.use(express.static('public'));
+
+// Add product route
+app.post('/add-product', upload1.single('product_image'), async (req, res) => {
+    try {
+      console.log('Uploaded file:', req.file); // Debugging line to check the uploaded file
+  
+      const { product_name, product_price, quantity } = req.body;
+      const product_image = req.file ? req.file.path : null; // Path to the uploaded image (relative to the 'public' folder)
+  
+      // Save product data to the database
+      const newProduct = new Product({
+        product_name,
+        product_price,
+        quantity,
+        product_image
+      });
+  
+      await newProduct.save();
+      res.status(201).json({ message: 'Product added successfully', product: newProduct });
+    } catch (error) {
+      console.error('Error adding product:', error);
+      res.status(500).json({ error: 'Failed to add product' });
+    }
+  });
+  
+
+// Get all users endpoint (for admin panel)
+app.get('/api/users', async (req, res) => {
+    try {
+        const users = await User.find().select('name email avatarId');
+        res.status(200).json(users);
+    } catch (err) {
+        console.error('Error fetching users:', err);
+        res.status(500).json({ error: 'Error fetching users', message: err.message });
+    }
+});
+
+
+
+
+  app.listen(5000, () => {
+    console.log('Server running on port 5000');
+});
+/////////////////////////////////
 // app.post('/api/cart', async (req, res) => {
 //     try {
 //         const { userId, productId, quantity } = req.body;
@@ -341,6 +461,4 @@ const productSchema = new mongoose.Schema({
 /////////////////////
 
 // Start the server
-app.listen(5000, () => {
-    console.log('Server running on port 5000');
-});
+
