@@ -169,7 +169,7 @@ const AdminPage = () => {
             </div>
             <div className="overview-item">
               <h3>Total Users</h3>
-              <p>100</p>
+              <p>-</p>
             </div>
             <div className="overview-item">
               <h3>Recent Activity</h3>
@@ -184,11 +184,11 @@ const AdminPage = () => {
             <h3>Sales Summary</h3>
             <div className="sales-item">
               <h4>Revenue (Last 30 Days)</h4>
-              <p>&#x20B9;120000</p> {/* Replace with dynamic data */}
+              <p>&#x20B9;X</p> {/* Replace with dynamic data */}
             </div>
             <div className="sales-item">
               <h4>Orders (Last 30 Days)</h4>
-              <p>120</p> {/* Replace with dynamic data */}
+              <p>-</p> {/* Replace with dynamic data */}
             </div>
           </div>
 

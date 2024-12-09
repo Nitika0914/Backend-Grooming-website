@@ -14,24 +14,23 @@ const Cart = () => {
   const totalPriceInINR = calculateTotal();
 
   useEffect(() => {
-    setDiscount((totalPriceInINR * 10) / 100); // 10% discount
-    setShippingCharges(totalPriceInINR < 999 ? 99 : 0); // ₹99 shipping if total is < ₹999
+    setDiscount((totalPriceInINR * 10) / 100); 
+    setShippingCharges(totalPriceInINR < 999 ? 99 : 0); 
   }, [totalPriceInINR]);
 
   const finalTotal = Math.max(0, totalPriceInINR - discount + shippingCharges);
 
   const handleQuantityChange = (index, newQuantity) => {
-    updateQuantity(index, newQuantity); // Use context method to update quantity
+    updateQuantity(index, newQuantity);
   };
 
   const handleCheckout = () => {
     alert('Proceeding to checkout...');
-    // Add your checkout logic here
-  };
+   };
 
   return (
     <>
-      <h3>Your Shopping Cart</h3>
+      <h3 className="heading-h">Your Shopping Cart</h3>
       <div className="cart-page">
         {cart.length === 0 ? (
           <p>Your cart is empty.</p>
@@ -75,7 +74,7 @@ const Cart = () => {
                 </div>
 
                 <button
-                  onClick={() => removeFromCart(index)} // Use context method to remove item
+                  onClick={() => removeFromCart(index)}
                   className="remove-btn"
                 >
                   Remove
@@ -88,19 +87,56 @@ const Cart = () => {
         {/* Checkout Section */}
         {cart.length > 0 && (
           <div className="checkout-section">
+            <h3>Your Order</h3>
             <div className="price-summary">
-              <h4>Subtotal: ₹{new Intl.NumberFormat().format(totalPriceInINR)}</h4>
-              <h4>Discount (10%): -₹{new Intl.NumberFormat().format(discount)}</h4>
-              <h4>Shipping Charges: ₹{new Intl.NumberFormat().format(shippingCharges)}</h4>
-              <h4>Final Total: ₹{new Intl.NumberFormat().format(finalTotal)}</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cart.map((item) => (
+                    <tr key={item.id}>
+                      <td>
+                        {item.product_name} × {item.quantity}
+                      </td>
+                      <td>₹{new Intl.NumberFormat().format(item.product_price * item.quantity)}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td>Subtotal</td>
+                    <td>₹{new Intl.NumberFormat().format(totalPriceInINR)}</td>
+                  </tr>
+                  <tr>
+                    <td>Shipping</td>
+                    <td>Free Shipping</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Total</strong>
+                    </td>
+                    <td>
+                      <strong>₹{new Intl.NumberFormat().format(finalTotal)}</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div className="checkout-btn-container">
+            <div className="checkout-footer">
+              <p>
+                Your personal data will be used to process your order, support your
+                experience throughout this website, and for other purposes described in
+                our <span className="privacy-policy">privacy policy</span>.
+              </p>
               <button className="checkout-btn" onClick={handleCheckout}>
-                Proceed to Checkout
+                Proceed to Payment
               </button>
             </div>
           </div>
         )}
+
       </div>
     </>
   );

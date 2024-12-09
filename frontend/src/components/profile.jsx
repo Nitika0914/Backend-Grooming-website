@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import Cookies from 'js-cookie';
 
 
 const Profile = () => {
@@ -13,7 +14,7 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token');
       if (token) {
         try {
           const response = await fetch('http://localhost:5000/user-details', {
@@ -42,7 +43,7 @@ const Profile = () => {
     const confirmation = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
     if (!confirmation) return;
 
-    const token = localStorage.getItem('token');
+    const token = Cookies.get('token');
     fetch('http://localhost:5000/delete-account', {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` },
@@ -51,7 +52,7 @@ const Profile = () => {
       .then((data) => {
         if (data.message) {
           alert('Account deleted successfully');
-          localStorage.removeItem('token'); // Remove token from localStorage
+           Cookies.remove('token'); // Remove token from localStorage
           window.location.href = '/'; // Redirect to login page after account deletion
         } else {
           alert('Failed to delete account');
@@ -76,7 +77,7 @@ const Profile = () => {
   };
 
   const handleSaveAvatar = () => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get('token');
     if (!avatarToSave) {
       alert('No avatar selected for upload.');
       return;
@@ -108,7 +109,7 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    Cookies.remove('token');
     window.location.href = '/'; // Redirect to login page
   };
 

@@ -66,8 +66,8 @@ function ProductCard({ product, currentUserId }) {
         <h4>{product.product_name}</h4>
         <p className="price">₹{product.product_price.toFixed(2)}</p>
       </div>
-      <div className="quantity-selector">
-        <label htmlFor={`quantity-${product._id}`}>Qty:</label>
+      {/* <div className="quantity-selector">
+        
         <input
           type="number"
           id={`quantity-${product._id}`}
@@ -75,7 +75,7 @@ function ProductCard({ product, currentUserId }) {
           onChange={handleQuantityChange}
           min="1"
         />
-      </div>
+      </div> */}
       <button
         className={`add-to-cart-btn ${added ? "added" : ""}`}
         onClick={handleAddToCart}

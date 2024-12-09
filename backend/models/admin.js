@@ -1,4 +1,3 @@
-// admin.js - models
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken'); // Import jwt for token generation
 
@@ -9,11 +8,10 @@ const adminSchema = new mongoose.Schema({
   role: { type: String, required: true },
 });
 
-// Add generateAuthToken method to the admin schema
 adminSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     { _id: this._id, email: this.email, role: this.role },
-    'secretkey', // Replace 'secretkey' with a more secure key
+    'secretkey', 
     { expiresIn: '1h' }
   );
   return token;

@@ -1,31 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import logo from '../assets/logo.png';
 import Login from './Login';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';  // Add this import
 import { faBars, faTimes, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FaShoppingCart } from 'react-icons/fa';
+import { faUser } from '@fortawesome/free-solid-svg-icons';  // Add this import
+import Cookies from 'js-cookie';
+
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Track the logged-in user
+  const [userName, setUserName] = useState(''); // Store user's name from backend
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const token = Cookies.get('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:5000/user-details', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data);
+            setUserName(data.name);
+          }
+        } catch (err) {
+          console.error('Failed to fetch user details', err);
+        }
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
   const handleLoginClick = () => setShowLogin(true);
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem('token');
+    setUserName('');/////////
+    Cookies.remove('token'); 
   };
 
-  const handleLoginSuccess = (userName) => {
-    setUser(userName);
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
+    setUserName(userData.name); ///////////
     setShowLogin(false);
+    Cookies.set('token', 'dummyToken'); // Save token after login
   };
 
   const toggleSearchBar = () => setShowSearchBar((prev) => !prev);
@@ -37,9 +68,9 @@ const Header = () => {
   };
 
   const handleSearchClear = () => {
-    setSearchQuery(''); // Clear search input
-    setSearchResults([]); // Reset search results
-    setSuggestions([]); // Clear suggestions
+    setSearchQuery(''); 
+    setSearchResults([]); 
+    setSuggestions([]); 
   };
 
   const handleSearchInputChange = async (e) => {
@@ -48,21 +79,19 @@ const Header = () => {
 
     if (query.trim() === '') {
       setSuggestions([]);
-      setSearchResults([]); // Clear results when query is empty
+      setSearchResults([]); 
       return;
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/search/products?q=${encodeURIComponent(query)}`
-      );
+      const response = await fetch(`http://localhost:5000/search/products?q=${encodeURIComponent(query)}`);
       const data = await response.json();
 
       if (response.ok) {
         const productNames = data.results.map((product) => product.product_name);
-        setSuggestions(productNames); // Populate suggestions
+        setSuggestions(productNames);
       } else {
-        console.error(data.error);
+        console.error('Error fetching suggestions:', data.error);
       }
     } catch (err) {
       console.error('Error fetching suggestions:', err);
@@ -119,14 +148,19 @@ const Header = () => {
 
           <div className="last-container">
             <div>
-              {user ? (
-                <>
-                  <span>Welcome, {user}</span>
-                  <button className="login-btn" onClick={handleLogout}>Logout</button>
-                </>
-              ) : (
-                <button className="login-btn" onClick={handleLoginClick}>Login</button>
-              )}
+            {user ? (
+              <>
+                <span>Welcome, {userName || 'User'}</span>
+                <Link to="/profile">  {/* Add the Link for navigation */}
+                  <button className='profile-btn'>
+                    <FontAwesomeIcon icon={faUser} className="profile-icon" />  {/* Display the profile icon */}
+                  </button>
+                </Link>
+              </>
+            ) : (
+              <button className="login-btn" onClick={handleLoginClick}>Login</button>
+            )}
+
             </div>
             <div>
               <Link to="/cart">
@@ -174,7 +208,6 @@ const Header = () => {
           </div>
         )}
       </header>
-
       {searchResults.length > 0 ? (
         <div className="search-results-container">
           {searchResults.map((product) => (
@@ -192,10 +225,9 @@ const Header = () => {
         ) : (
           searchQuery.trim() !== '' && <p>No products found for "{searchQuery}"</p>
         )}
-  
-        {showLogin && <Login onLoginSuccess={handleLoginSuccess} onClose={() => setShowLogin(false)} />}
-      </>
-    );
-  };
-  
-  export default Header;
+      {showLogin && <Login onLoginSuccess={handleLoginSuccess} onClose={() => setShowLogin(false)} />}
+    </>
+  );
+};
+
+export default Header;

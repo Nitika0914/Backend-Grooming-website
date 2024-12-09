@@ -285,3 +285,32 @@ a:hover {
   display: flex;
   margin-right: 70px;
 }
+.last-container span{
+  margin-right: 20px;
+}
+
+.profile-btn {
+  border-color: #4caf50;
+  background-color: #f1f1f1; /* Light background for the profile button */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 50%; /* Make it circular */
+  padding: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profile-btn:hover {
+  background-color: #ddd; /* Change background on hover */
+}
+
+.profile-btn .profile-icon {
+  font-size: 1.5rem; /* Adjust icon size */
+  color: #4caf50; /* Icon color */
+}
+
+.profile-btn a {
+  color: inherit; /* Ensures the link color matches the button */
+  text-decoration: none; /* Remove underline from the link */
+}

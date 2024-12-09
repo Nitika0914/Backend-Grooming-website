@@ -11,13 +11,17 @@ const adminRoutes = require('./routes/adminRoutes');
 const multer = require('multer');
 const fs=require('fs');
 
-
 const secretKey = "secretkey";
 
 // Middleware
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(cors()); // Enable CORS for all routes
+//app.use(cors()); 
+app.use(cors({
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}));
+
 app.use(bodyParser.json()); 
 
 // MongoDB connection
@@ -26,21 +30,26 @@ mongoose.connect(Mongo_url)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
-    // Define User Schema
+// schema
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     avatarId: {type:String},
 });
+const contactSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    message: { type: String, required: true },
+});
 
-// Method to generate JWT token
+//generate JWT token
 userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({ _id: this._id, email: this.email }, secretKey, { expiresIn: '1h' });
     return token;
 };
 
-// Create User Model
+
 const User = mongoose.model('User', userSchema);
 
 // Signup endpoint
@@ -62,6 +71,12 @@ app.post('/signup', async (req, res) => {
         console.log('New user created:', newUser); // Log the new user object
 
         const token = newUser.generateAuthToken();
+        res.cookie('authToken', token, {
+            httpOnly: true, // Prevent client-side access
+            secure: true, // Use HTTPS in production
+            sameSite: 'Strict',
+            maxAge: 3600000, // 1 hour
+        });
         res.status(201).json({ message: 'User created', token });
     } catch (err) {
         console.error('Error creating user:', err);
@@ -83,6 +98,13 @@ app.post('/login', async (req, res) => {
         const match = await bcrypt.compare(password, user.password);    
         if (match) {
             const token = user.generateAuthToken();
+                        res.cookie('authToken', token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'Strict',
+                maxAge: 3600000, // 1 hour
+            });
+
             res.status(200).json({ message: 'Login successful', name: user.name, token });
         } else {
             res.status(401).json({ error: 'Invalid email or password' });
@@ -95,15 +117,8 @@ app.post('/login', async (req, res) => {
 
 
 
-// Contact Us Schema and Endpoint
-const contactSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    message: { type: String, required: true },
-});
-
+// Contact Us 
 const Contact = mongoose.model('Contact', contactSchema);
-
 app.post('/contact', async (req, res) => {
     const { name, email, message } = req.body;
 
@@ -130,6 +145,7 @@ const authenticate = (req, res, next) => {
         res.status(400).json({ error: 'Invalid token' });
     }
 };
+
 // Account details endpoint
 app.get('/user-details', authenticate, async (req, res) => {
     try {
@@ -174,7 +190,6 @@ app.delete('/delete-account', authenticate, async (req, res) => {
             console.error('User not found');
             return res.status(404).json({ error: 'User not found' });
         }
-        // If the user has an avatar, delete it
         if (user.avatarId) {
             const avatarPath = path.join(__dirname, 'uploads', user.avatarId);
             if (fs.existsSync(avatarPath)) {
@@ -199,7 +214,6 @@ app.post('/upload-avatar', authenticate, upload.single('avatar'), async (req, re
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // If user already has an avatar, delete the old one
         if (user.avatarId) {
             const oldAvatarPath = path.join(__dirname, 'uploads', user.avatarId);
             if (fs.existsSync(oldAvatarPath)) {
@@ -366,10 +380,7 @@ app.post('/get-all-admins', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
-
-
-/////////////  ////
+//upload image from admin panel
 const storage1 = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, './public'); // Folder where images will be stored
@@ -432,33 +443,6 @@ app.get('/api/users', async (req, res) => {
 });
 
 
-
-
-  app.listen(5000, () => {
+app.listen(5000, () => {
     console.log('Server running on port 5000');
 });
-/////////////////////////////////
-// app.post('/api/cart', async (req, res) => {
-//     try {
-//         const { userId, productId, quantity } = req.body;
-//         // Add product to user's cart
-//         const cartItem = { productId, quantity };
-//         const userCart = await Cart.findOneAndUpdate(
-//             { userId },
-//             { $push: { items: cartItem } },
-//             { upsert: true, new: true }
-//         );
-//         res.status(200).json(userCart);
-//     } catch (err) {
-//         console.error('Error adding to cart:', err);
-//         res.status(500).json({ error: 'Could not add to cart' });
-//     }
-// });
-
-
-
-
-/////////////////////
-
-// Start the server
-

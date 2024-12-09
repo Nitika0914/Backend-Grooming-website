@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import tick from '../assets/tick.jpg';
+import Cookies from 'js-cookie';  // Make sure this is here
+
 
 const Login = ({ onClose, onLoginSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,9 +16,9 @@ const Login = ({ onClose, onLoginSuccess }) => {
   const signupFormRef = useRef(null);
 
   // Check if token exists and is valid
-  useEffect(() => {
+   useEffect(() => {
     const checkToken = async () => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token'); // Retrieve token from cookies
       if (token) {
         try {
           const response = await fetch('http://localhost:5000/protected-route', {
@@ -35,7 +37,6 @@ const Login = ({ onClose, onLoginSuccess }) => {
     };
     checkToken();
   }, []);
-
   const handleSignup = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -58,12 +59,11 @@ const Login = ({ onClose, onLoginSuccess }) => {
       const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, confirmPassword, password }),
+        body: JSON.stringify({ name, email, password }),
+        credentials: 'include', // Include cook
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.token); // Save token in localStorage
         setIsSignedUp(true);
         signupFormRef.current.reset();
         setError('');
@@ -80,7 +80,7 @@ const Login = ({ onClose, onLoginSuccess }) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-
+  
     try {
       const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
@@ -88,11 +88,12 @@ const Login = ({ onClose, onLoginSuccess }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', // Include cookies in the request
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token); // Save token in localStorage
+        Cookies.set('token', data.token, { expires: 7 }); // Store the token in cookies
         navigate('/profile');
       } else {
         const result = await response.json();
@@ -102,6 +103,7 @@ const Login = ({ onClose, onLoginSuccess }) => {
       setError('Error connecting to server');
     }
   };
+  
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
@@ -117,7 +119,7 @@ const Login = ({ onClose, onLoginSuccess }) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('adminToken', data.token);
+        Cookies.set('adminToken', data.token, { expires: 7 }); // Store admin token in cookies for 7 days
         navigate('/AdminPage');
       } else {
         const result = await response.json();
